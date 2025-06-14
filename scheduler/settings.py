@@ -134,4 +134,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'wilterq@gmail.com'        # Replace with your Gmail
 EMAIL_HOST_PASSWORD = 'pjom uxvz kpbv mqug' # Use App Password from Gmail
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+CSRF_TRUSTED_ORIGINS = [
+    'https://smart-scheduler-production.up.railway.app'
+]
+ALLOWED_HOSTS = ['smart-scheduler-production.up.railway.app', 'localhost', '127.0.0.1']
 
