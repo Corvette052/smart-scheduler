@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-8(0f_546_kucjbjkl3ry%t@prp+ffp=+5kgh3a1y%8%%#@8j8s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['smart-scheduler-production.up.railway.app', 'localhost', '127.0.0.1']
+
 
 
 # Application definition
