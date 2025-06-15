@@ -33,6 +33,8 @@ def _get_location_id(api_key: str | None) -> str | None:
 
 
 def _get_headers(api_key: str | None) -> dict | None:
+    """Return headers for the GHL API or ``None`` if the key is missing."""
+
     if not api_key:
         print("⚠️  GHL_API_KEY not set; GoHighLevel integration disabled.")
         return None
