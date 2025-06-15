@@ -127,15 +127,32 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Add this at the bottom of settings.py
 
+# ✅ Email sending configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'wilterq@gmail.com'        # Replace with your Gmail
-EMAIL_HOST_PASSWORD = 'pjom uxvz kpbv mqug' # Use App Password from Gmail
+EMAIL_HOST_USER = 'wilterq@gmail.com'               # Replace with your Gmail
+EMAIL_HOST_PASSWORD = 'yfnf gjiv sjsg yjie'         # Use an App Password from Gmail
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# ✅ Optional: Admin notification emails via env var or fallback
+import os
+
+_admin_env = os.getenv("ADMIN_EMAILS", "corvette052@gmail.com")
+ADMIN_EMAILS = [email.strip() for email in _admin_env.split(',') if email.strip()]
+
+# ✅ Use this in code like:
+# send_mail(subject, message, DEFAULT_FROM_EMAIL, ADMIN_EMAILS)
+# or use Django's built-in error notification:
+ADMINS = [(email, email) for email in ADMIN_EMAILS]
+
+# ✅ Security settings
 CSRF_TRUSTED_ORIGINS = [
     'https://smart-scheduler-production.up.railway.app'
+]
+
+ALLOWED_HOSTS = ['smart-scheduler-production.up.railway.app', 'localhost', '127.0.0.1']
 ]
 ALLOWED_HOSTS = ['smart-scheduler-production.up.railway.app', 'localhost', '127.0.0.1']
 
