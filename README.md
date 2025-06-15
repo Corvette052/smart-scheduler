@@ -16,6 +16,9 @@ manager:
 - `EMAIL_HOST_PASSWORD` – app password for the above account.
 - `GOOGLE_CREDS` – JSON credentials for the Google Calendar service account.
 - `GHL_API_KEY` – API key used to create contacts in GoHighLevel.
+   y90a53-codex/connect-app-to-ghl-and-create-contact-on-booking
+- `- `GHL_LOCATION_ID` – location ID for your GoHighLevel account. If omitted, the application attempts to decode it from the JWT-formatted `GHL_API_KEY`.
+ init-branch
 
 If `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` are omitted, the application now
 logs a warning and continues without sending emails. Bookings are still saved
