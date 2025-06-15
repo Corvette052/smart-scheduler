@@ -78,3 +78,8 @@ def public_booking_view(request):
 
     return render(request, 'bookings/public_booking.html', {'form': form})
 
+
+def thank_you_view(request):
+    """Simple page displayed after a successful booking."""
+    return render(request, 'bookings/thank_you.html')
+
