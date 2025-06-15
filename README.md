@@ -19,3 +19,20 @@ manager:
 If `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` are omitted, the application now
 logs a warning and continues without sending emails. Bookings are still saved
 and added to Google Calendar.
+
+## Initial setup
+
+After deploying to a new environment, run migrations to create the SQLite database:
+
+```bash
+python manage.py migrate
+```
+
+This step is required the first time the app runs on Railway since the container starts with an empty filesystem.
+For Railway deployments run the command via the CLI:
+
+```bash
+railway run python manage.py migrate
+```
+
+Running this once creates `db.sqlite3` on your service and stops the 500 error.
