@@ -16,8 +16,11 @@ import pytz
 tz_name = os.getenv("CALENDAR_TZ", "America/New_York")
 local_tz = pytz.timezone(tz_name)
 
-# Additional email address to receive booking notifications
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "corvette052@gmail.com")
+# Additional email addresses to receive booking notifications.  Parse the
+# comma-separated ADMIN_EMAILS variable into a list.  If not provided, use a
+# single default address.
+_admin_env = os.getenv("ADMIN_EMAILS", "corvette052@gmail.com")
+ADMIN_EMAILS = [email.strip() for email in _admin_env.split(',') if email.strip()]
 
 def public_booking_view(request):
     if request.method == 'POST':
@@ -80,7 +83,7 @@ def public_booking_view(request):
                 subject,
                 message,
                 settings.DEFAULT_FROM_EMAIL,
-                [booking.email, ADMIN_EMAIL]
+                [booking.email] + ADMIN_EMAILS
             )
 
             return redirect('thank_you')
