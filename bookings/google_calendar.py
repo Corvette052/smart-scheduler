@@ -27,8 +27,14 @@ if raw_creds:
 else:
     print("⚠️  GOOGLE_CREDS not set; Google Calendar integration disabled.")
 
-# Which calendar to write to? You can also set this in ENV: CALENDAR_ID
-CALENDAR_ID = os.getenv('CALENDAR_ID', 'your-account@gmail.com')
+# Which calendars to write to. If CALENDAR_IDS is provided, parse it as a
+# comma-separated list. Otherwise fall back to a single CALENDAR_ID variable (or
+# a default ID).
+_cals_env = os.getenv('CALENDAR_IDS')
+if _cals_env:
+    CALENDAR_IDS = [cid.strip() for cid in _cals_env.split(',') if cid.strip()]
+else:
+    CALENDAR_IDS = [os.getenv('CALENDAR_ID', 'your-account@gmail.com')]
 
 
 def create_event(summary: str, start_datetime: datetime, end_datetime: datetime):
@@ -56,10 +62,12 @@ def create_event(summary: str, start_datetime: datetime, end_datetime: datetime)
         },
     }
 
-    try:
-        created = service.events().insert(calendarId=CALENDAR_ID, body=event).execute()
-        print(f"✅ Event created: {created.get('htmlLink')}")
-        return created
-    except Exception as e:
-        print(f"❌ Failed to create event: {e}")
-        return None
+    created_event = None
+    for cal_id in CALENDAR_IDS:
+        try:
+            created_event = service.events().insert(calendarId=cal_id, body=event).execute()
+            print(f"✅ Event created on {cal_id}: {created_event.get('htmlLink')}")
+        except Exception as e:
+            print(f"❌ Failed to create event on {cal_id}: {e}")
+
+    return created_event
