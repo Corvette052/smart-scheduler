@@ -15,6 +15,17 @@ manager:
 - `EMAIL_HOST_USER` – email account used to send booking confirmations.
 - `EMAIL_HOST_PASSWORD` – app password for the above account.
 - `GOOGLE_CREDS` – JSON credentials for the Google Calendar service account.
+- `GHL_API_KEY` – API key used to create contacts in GoHighLevel.
+- `GHL_LOCATION_ID` – location ID for your GoHighLevel account. If omitted, the application attempts to decode it from the JWT-formatted `GHL_API_KEY`.
+
+To enable GoHighLevel integration, set `GHL_API_KEY` in your environment. The token
+looks like a JWT string (three segments separated by dots). The location ID
+is extracted automatically, so a typical `.env` snippet might look like:
+
+```env
+GHL_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+You can explicitly set `GHL_LOCATION_ID` if you prefer to override the decoded value.
 
 If `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` are omitted, the application now
 logs a warning and continues without sending emails. Bookings are still saved
