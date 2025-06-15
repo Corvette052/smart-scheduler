@@ -3,6 +3,7 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.mail import send_mail
+import os
 
 from .forms import PublicBookingForm
 from .models import Booking
@@ -11,8 +12,9 @@ from .google_calendar import create_event
 from datetime import datetime, timedelta
 import pytz
 
-# Eastern timezone object
-eastern = pytz.timezone(settings.TIME_ZONE)
+# Use the same timezone as Google Calendar so times match exactly
+tz_name = os.getenv("CALENDAR_TZ", "America/New_York")
+local_tz = pytz.timezone(tz_name)
 
 def public_booking_view(request):
     if request.method == 'POST':
@@ -20,16 +22,16 @@ def public_booking_view(request):
         if form.is_valid():
             # —————————————————————————————————————————
             # 1) parse the ISO string; if it's naive, localize it;
-            #    otherwise, convert it into Eastern properly
+            #    otherwise, convert it into the local timezone properly
             slot_iso = form.cleaned_data['slot']              # e.g. "2025-06-15T08:00:00-04:00"
             slot_dt  = datetime.fromisoformat(slot_iso)
 
             if slot_dt.tzinfo is None:
-                # no offset ⇒ assume Eastern
-                slot_dt = eastern.localize(slot_dt)
+                # no offset ⇒ assume local timezone
+                slot_dt = local_tz.localize(slot_dt)
             else:
-                # already has an offset ⇒ convert into Eastern
-                slot_dt = slot_dt.astimezone(eastern)
+                # already has an offset ⇒ convert into local timezone
+                slot_dt = slot_dt.astimezone(local_tz)
 
             # 2) compute end time
             end_dt = slot_dt + timedelta(hours=1, minutes=30)
