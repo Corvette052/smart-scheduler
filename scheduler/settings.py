@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = 'django-insecure-8(0f_546_kucjbjkl3ry%t@prp+ffp=+5kgh3a1y%8%%#@8j8s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -132,9 +132,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = 'wilterq@gmail.com'
+EMAIL_HOST_PASSWORD = 'yfnf gjiv sjsg yjie'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+_admin_env = os.getenv("ADMIN_EMAILS", "corvette052@gmail.com")
+ADMIN_EMAILS = [email.strip() for email in _admin_env.split(',') if email.strip()]
+ADMINS = [(email, email) for email in ADMIN_EMAILS]
+
 CSRF_TRUSTED_ORIGINS = [
     'https://smart-scheduler-production.up.railway.app'
 ]
