@@ -16,6 +16,7 @@ import pytz
 tz_name = os.getenv("CALENDAR_TZ", "America/New_York")
 local_tz = pytz.timezone(tz_name)
 
+
 def public_booking_view(request):
     if request.method == 'POST':
         form = PublicBookingForm(request.POST)
@@ -73,7 +74,12 @@ def public_booking_view(request):
                 f"📍 {booking.address}, {booking.zip_code}\n\n"
                 "See you soon!\n— Your Company"
             )
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [booking.email])
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [booking.email, *settings.ADMIN_EMAILS]
+            )
 
             return redirect('thank_you')
     else:
