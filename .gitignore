@@ -1,5 +1,6 @@
-"venv/" 
-"*.pyc" 
-"__pycache__/" 
-"bookings/credentials.json" 
-"venv/" 
+venv/
+*.pyc
+__pycache__/
+bookings/credentials.json
+Smart Scheduler Sync.json
+db.sqlite3
