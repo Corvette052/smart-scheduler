@@ -137,5 +137,4 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 CSRF_TRUSTED_ORIGINS = [
     'https://smart-scheduler-production.up.railway.app'
 ]
-ALLOWED_HOSTS = ['smart-scheduler-production.up.railway.app', 'localhost', '127.0.0.1']
 
