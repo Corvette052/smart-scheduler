@@ -45,7 +45,10 @@ def _get_headers(api_key: str | None) -> dict | None:
 def create_contact(full_name: str, email: str | None = None, phone: str | None = None):
     """Create a contact in GoHighLevel.
 
-    If the API key is not configured the function returns ``None`` silently.
+    The function looks for ``GHL_API_KEY`` and optionally ``GHL_LOCATION_ID`` in
+    the environment.  If ``GHL_LOCATION_ID`` isn't provided it will attempt to
+    decode it from the JWT-formatted API key.  When the API key is missing the
+    call is skipped entirely and ``None`` is returned.
     """
     api_key = _get_api_key()
     headers = _get_headers(api_key)
