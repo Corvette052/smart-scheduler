@@ -79,12 +79,15 @@ def public_booking_view(request):
                 f"📍 {booking.address}, {booking.zip_code}\n\n"
                 "See you soon!\n— Your Company"
             )
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [booking.email] + ADMIN_EMAILS
-            )
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [booking.email] + ADMIN_EMAILS
+                )
+            except Exception as e:
+                print(f"\u26a0\ufe0f Failed to send confirmation email: {e}")
 
             return redirect('thank_you')
     else:
