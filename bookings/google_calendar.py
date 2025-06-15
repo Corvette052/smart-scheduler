@@ -8,21 +8,22 @@ from googleapiclient.discovery import build
 # Scopes your service account needs
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
-# Load the raw JSON string from the env var
+# Load credentials from the environment if present. Importing this module should
+# not crash the app if the variable isn't set; instead we'll disable calendar
+# functionality.
 raw_creds = os.getenv('GOOGLE_CREDS')
-if not raw_creds:
-    raise ValueError("GOOGLE_CREDS env variable not set. Paste your service account JSON here.")
 
-# Parse it
-service_account_info = json.loads(raw_creds)
-
-# Build credentials object
-credentials = service_account.Credentials.from_service_account_info(
-    service_account_info, scopes=SCOPES
-)
-
-# Construct the Calendar API client
-service = build('calendar', 'v3', credentials=credentials)
+service = None
+if raw_creds:
+    service_account_info = json.loads(raw_creds)
+    credentials = service_account.Credentials.from_service_account_info(
+        service_account_info, scopes=SCOPES
+    )
+    service = build('calendar', 'v3', credentials=credentials)
+else:
+    print(
+        "GOOGLE_CREDS env variable not set; Google Calendar integration disabled."
+    )
 
 # Which calendar to write to? You can also set this in ENV: CALENDAR_ID
 CALENDAR_ID = os.getenv('CALENDAR_ID', 'your-account@gmail.com')
@@ -48,6 +49,10 @@ def create_event(summary: str, start_datetime: datetime, end_datetime: datetime)
             'timeZone': tz,
         },
     }
+
+    if service is None:
+        print("Google Calendar service not configured; skipping event creation.")
+        return None
 
     try:
         created = service.events().insert(calendarId=CALENDAR_ID, body=event).execute()
