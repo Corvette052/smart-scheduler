@@ -35,13 +35,14 @@ def public_booking_view(request):
             end_dt = slot_dt + timedelta(hours=1, minutes=30)
             # —————————————————————————————————————————
 
-            # 3) save booking (store tz-aware times)
+            # 3) save booking (SQLite can't handle tz-aware TimeFields)
             booking = Booking.objects.create(
                 customer     = None,
                 service_type = 'Standard Service',
                 date         = slot_dt.date(),
-                start_time   = slot_dt.timetz(),
-                end_time     = end_dt.timetz(),
+                # SQLite cannot store timezone-aware times, so strip tzinfo
+                start_time   = slot_dt.time(),
+                end_time     = end_dt.time(),
                 address      = form.cleaned_data['address'],
                 zip_code     = form.cleaned_data['zip_code'],
                 phone        = form.cleaned_data['phone'],
