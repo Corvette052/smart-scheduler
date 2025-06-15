@@ -109,3 +109,7 @@ def thank_you_view(request):
     """Simple page displayed after a successful booking."""
     return render(request, 'bookings/thank_you.html')
 
+
+def marketing_form_view(request):
+    """Display an embedded marketing form served from link.derosales.com."""
+    return render(request, 'bookings/marketing_form.html')
