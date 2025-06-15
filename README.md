@@ -15,6 +15,7 @@ manager:
 - `EMAIL_HOST_USER` – email account used to send booking confirmations.
 - `EMAIL_HOST_PASSWORD` – app password for the above account.
 - `GOOGLE_CREDS` – JSON credentials for the Google Calendar service account.
+- `GHL_API_KEY` – API key used to create contacts in GoHighLevel.
 
 If `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` are omitted, the application now
 logs a warning and continues without sending emails. Bookings are still saved
