@@ -16,12 +16,18 @@ def get_available_slots():
         current = datetime.combine(date, WORK_START)
         end = datetime.combine(date, WORK_END)
 
+        bookings = list(Booking.objects.filter(date=date))
+
         while current + JOB_DURATION <= end:
-            overlap = Booking.objects.filter(
-                date=date,
-                start_time__lt=(current + BLOCK_TIME).time(),
-                end_time__gt=current.time()
-            ).exists()
+            overlap = False
+
+            for booking in bookings:
+                booking_start = datetime.combine(date, booking.start_time)
+                block_end = booking_start + BLOCK_TIME
+
+                if booking_start <= current < block_end:
+                    overlap = True
+                    break
 
             if not overlap and current > now:
                 slots.append({
