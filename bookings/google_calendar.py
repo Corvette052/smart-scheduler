@@ -37,7 +37,7 @@ else:
     CALENDAR_IDS = [os.getenv('CALENDAR_ID', 'your-account@gmail.com')]
 
 
-def create_event(summary: str, start_datetime: datetime, end_datetime: datetime):
+def create_event(summary: str, start_datetime: datetime, end_datetime: datetime, location: str | None = None):
     """
     Creates an event on your Google Calendar.
     summary: text title
@@ -61,6 +61,9 @@ def create_event(summary: str, start_datetime: datetime, end_datetime: datetime)
             'timeZone': tz,
         },
     }
+
+    if location:
+        event['location'] = location
 
     created_event = None
     for cal_id in CALENDAR_IDS:

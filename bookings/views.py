@@ -66,7 +66,8 @@ def public_booking_view(request):
             create_event(
                 summary        = f"{booking.full_name} – {booking.service_type}",
                 start_datetime = slot_dt,
-                end_datetime   = end_dt
+                end_datetime   = end_dt,
+                location       = f"{booking.address}, {booking.zip_code}"
             )
 
             # 5) send confirmation email
