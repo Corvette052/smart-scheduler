@@ -8,6 +8,7 @@ import os
 from .forms import PublicBookingForm
 from .models import Booking
 from .google_calendar import create_event
+from .gohighlevel import create_contact
 
 from datetime import datetime, timedelta
 import pytz
@@ -62,7 +63,14 @@ def public_booking_view(request):
                 full_name    = form.cleaned_data['full_name'],
             )
 
-            # 4) push to Google Calendar
+            # 4) create contact in GoHighLevel
+            create_contact(
+                full_name=booking.full_name,
+                email=booking.email,
+                phone=booking.phone,
+            )
+
+            # 5) push to Google Calendar
             create_event(
                 summary        = f"{booking.full_name} – {booking.service_type}",
                 start_datetime = slot_dt,
@@ -70,7 +78,7 @@ def public_booking_view(request):
                 location       = f"{booking.address}, {booking.zip_code}"
             )
 
-            # 5) send confirmation email
+            # 6) send confirmation email
             subject = "Your Appointment is Confirmed"
             message = (
                 f"Hi {booking.full_name},\n\n"
